@@ -22,14 +22,16 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.5'
+          flutter-version: '3.35.5'  # 使用错误提示推荐的版本
           channel: 'stable'
+
+      - name: Verify Flutter and Dart versions
+        run: |
+          flutter --version
+          dart --version
 
       - name: Disable Flutter analytics
         run: flutter config --no-analytics
-
-      - name: Navigate to Flutter project directory
-        run: cd simple_live_app && pwd
 
       - name: Install dependencies
         working-directory: ./simple_live_app
@@ -56,8 +58,13 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.5'
+          flutter-version: '3.35.5'
           channel: 'stable'
+
+      - name: Verify Flutter and Dart versions
+        run: |
+          flutter --version
+          dart --version
 
       - name: Disable Flutter analytics
         run: flutter config --no-analytics
@@ -87,13 +94,18 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.5'
+          flutter-version: '3.35.5'
           channel: 'stable'
 
       - name: Install Linux dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev
+
+      - name: Verify Flutter and Dart versions
+        run: |
+          flutter --version
+          dart --version
 
       - name: Disable Flutter analytics
         run: flutter config --no-analytics
@@ -123,8 +135,13 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.5'
+          flutter-version: '3.35.5'
           channel: 'stable'
+
+      - name: Verify Flutter and Dart versions
+        run: |
+          flutter --version
+          dart --version
 
       - name: Disable Flutter analytics
         run: flutter config --no-analytics
@@ -144,9 +161,8 @@ jobs:
           path: simple_live_app/build/macos/Build/Products/
           retention-days: 30
 
-  # iOS构建需要证书，这里只提供基础配置
   build-ios:
-    name: Build iOS (Requires Code Signing)
+    name: Build iOS
     runs-on: macos-latest
     steps:
       - name: Checkout code
@@ -155,8 +171,13 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.5'
+          flutter-version: '3.35.5'
           channel: 'stable'
+
+      - name: Verify Flutter and Dart versions
+        run: |
+          flutter --version
+          dart --version
 
       - name: Disable Flutter analytics
         run: flutter config --no-analytics
@@ -178,4 +199,4 @@ jobs:
           name: simple-live-ios-debug
           path: simple_live_app/build/ios/
           retention-days: 30
-        if: always() # 即使构建失败也上传，以便查看构建结果
+        if: always()
