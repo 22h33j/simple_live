@@ -13,6 +13,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Fix intl dependency version
+        working-directory: ./simple_live_app
+        run: |
+          # 备份原始文件
+          cp pubspec.yaml pubspec.yaml.backup
+          # 将 intl: ^0.19.0 替换为 intl: ^0.20.2
+          sed -i 's/intl: \^0.19.0/intl: ^0.20.2/g' pubspec.yaml
+          # 检查修改结果
+          echo "Modified pubspec.yaml intl dependency:"
+          grep -A 2 -B 2 "intl:" pubspec.yaml || echo "intl dependency not found or already modified"
+          
+          # 如果上面的模式不匹配，尝试其他可能的模式
+          if ! grep -q "intl: ^0.20.2" pubspec.yaml; then
+            echo "Trying alternative pattern matching..."
+            sed -i 's/intl: *\^0\.19\..*/intl: ^0.20.2/g' pubspec.yaml
+            grep -A 2 -B 2 "intl:" pubspec.yaml || echo "Still not found"
+          fi
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -22,7 +40,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.5'  # 使用错误提示推荐的版本
+          flutter-version: '3.35.5'
           channel: 'stable'
 
       - name: Verify Flutter and Dart versions
@@ -54,6 +72,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Fix intl dependency version (Windows)
+        working-directory: ./simple_live_app
+        run: |
+          Copy-Item pubspec.yaml pubspec.yaml.backup
+          $content = Get-Content pubspec.yaml -Raw
+          $content = $content -replace 'intl: \^0\.19\.0', 'intl: ^0.20.2'
+          $content | Set-Content pubspec.yaml
+          Write-Host "Modified pubspec.yaml intl dependency:"
+          Select-String -Path pubspec.yaml -Pattern "intl:" -Context 2,2
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -90,6 +118,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Fix intl dependency version
+        working-directory: ./simple_live_app
+        run: |
+          cp pubspec.yaml pubspec.yaml.backup
+          sed -i 's/intl: \^0.19.0/intl: ^0.20.2/g' pubspec.yaml
+          echo "Modified pubspec.yaml intl dependency:"
+          grep -A 2 -B 2 "intl:" pubspec.yaml || echo "intl dependency not found or already modified"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -132,6 +168,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Fix intl dependency version
+        working-directory: ./simple_live_app
+        run: |
+          cp pubspec.yaml pubspec.yaml.backup
+          sed -i '' 's/intl: \^0.19.0/intl: ^0.20.2/g' pubspec.yaml
+          echo "Modified pubspec.yaml intl dependency:"
+          grep -A 2 -B 2 "intl:" pubspec.yaml || echo "intl dependency not found or already modified"
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -167,6 +211,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Fix intl dependency version
+        working-directory: ./simple_live_app
+        run: |
+          cp pubspec.yaml pubspec.yaml.backup
+          sed -i '' 's/intl: \^0.19.0/intl: ^0.20.2/g' pubspec.yaml
+          echo "Modified pubspec.yaml intl dependency:"
+          grep -A 2 -B 2 "intl:" pubspec.yaml || echo "intl dependency not found or already modified"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
